@@ -2,13 +2,13 @@ package pages.implementation;
 
 import annotations.Path;
 import exceptions.PathSupportException;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 public class AbsBasePage<T> extends AbsWebPageObject {
 
   private static final String BASE_URL = System.getProperty("base.url", "https://otus.ru");
 
-  public AbsBasePage(WebDriver driver) {
+  public AbsBasePage(EventFiringWebDriver driver) {
     super(driver);
   }
 

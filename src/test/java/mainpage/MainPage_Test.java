@@ -2,6 +2,7 @@ package mainpage;
 
 import annotations.Driver;
 import annotations.Page;
+import data.CourseTitleData;
 import extensions.UIExtensions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,7 @@ public class MainPage_Test {
   @Test
   public void mainPageIsOpenedTest() {
     mainPage
-      .open();
+      .open()
+        .findCourseByTitle(CourseTitleData.APACHEKAFKA);
   }
 }

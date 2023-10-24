@@ -1,17 +1,17 @@
 package pages.implementation;
 
-import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.events.EventFiringWebDriver;
 import waiters.IWaiter;
 import waiters.StandardWaiter;
 
 public class AbsWebPageObject {
 
-  protected WebDriver driver;
+  protected EventFiringWebDriver driver;
   protected Actions actions;
-  protected IWaiter waiter;
+  protected StandardWaiter waiter;
 
-  public AbsWebPageObject(WebDriver driver) {
+  public AbsWebPageObject(EventFiringWebDriver driver) {
     this.driver = driver;
     this.actions = new Actions(driver);
     this.waiter = new StandardWaiter(driver);
