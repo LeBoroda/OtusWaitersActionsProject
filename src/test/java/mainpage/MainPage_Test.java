@@ -19,9 +19,18 @@ public class MainPage_Test {
 
 
   @Test
-  public void mainPageIsOpenedTest() {
+  public void coursesTitleSortTest() {
     mainPage
-      .open()
+        .open()
         .findCourseByTitle(CourseTitleData.APACHEKAFKA);
   }
+
+  @Test
+  public void coursesDateSortTest() {
+    mainPage
+        .open()
+        .choseCourseByDate("earliest");
+
+  }
+
 }

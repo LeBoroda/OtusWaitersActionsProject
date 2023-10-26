@@ -20,11 +20,11 @@ public class MainPage extends AbsBasePage<MainPage> {
     courseTile.getCourseByTitle(courseTitle.getName());
   }
 
-  public void choseEarliestCourse() {
-
+  public void choseCourseByDate(String condition) {
+    CookiesPopUpComponent popUpComponent = new CookiesPopUpComponent(driver);
+    popUpComponent.closeCookiesPopup();
+    CourseTileComponent courseTile = new CourseTileComponent(driver);
+    courseTile.getCourseByDate(condition);
   }
 
-  public void choseLatestCourse() {
-
-  }
 }
