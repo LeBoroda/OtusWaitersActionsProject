@@ -12,6 +12,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
     <base.url>https://otus.ru</base.url>
+    <webdriver.timeouts.implicitwait>5000</webdriver.timeouts.implicitwait>
 
     <webdriver.manager.version>5.5.3</webdriver.manager.version>
     <selenium.java.version>3.141.59</selenium.java.version>
