@@ -29,7 +29,7 @@ public class MainPage_Test {
   public void coursesDateSortTest() {
     mainPage
         .open()
-        .choseCourseByDate("earliest");
+        .choseCourseByDate("latest");
 
   }
 

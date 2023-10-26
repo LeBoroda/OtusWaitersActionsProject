@@ -4,6 +4,7 @@ import static java.util.Map.Entry.comparingByValue;
 
 import components.implementation.AbsComponent;
 import data.MonthNameData;
+import exceptions.SortingParameterException;
 import org.junit.jupiter.api.Assertions;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -77,10 +78,12 @@ public class CourseTileComponent extends AbsComponent {
       result = coursesWithDates.entrySet().stream()
           .sorted(comparingByValue())
           .findFirst().get().getKey();
-    } else {
+    } else if(choiceCondition.toUpperCase(Locale.ROOT).equals("LATEST")){
       result = coursesWithDates.entrySet().stream()
           .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
           .findFirst().get().getKey();
+    } else {
+      throw new SortingParameterException(choiceCondition);
     }
     actions.moveToElement(result).click().build().perform();
   }
