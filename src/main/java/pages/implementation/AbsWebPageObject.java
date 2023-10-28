@@ -2,7 +2,6 @@ package pages.implementation;
 
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
-import waiters.IWaiter;
 import waiters.StandardWaiter;
 
 public class AbsWebPageObject {

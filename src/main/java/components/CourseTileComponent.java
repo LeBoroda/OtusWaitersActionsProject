@@ -14,22 +14,22 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class CourseTileComponent extends AbsComponent {
+public class CourseTileComponent extends AbsComponent<CourseTileComponent> {
 
-  private String courseTileSelector = "a[href*='https://otus.ru/lessons/']";
-  private String courseNameSelector = String.format("%s div h5", courseTileSelector);
-  private String courseDateLocator = "(//a[contains(@href,'https://otus.ru/lessons/')]//span[contains(text(),'С')])[%d]";
+  private final String courseTileLocator = "(//a[contains(@href,'https://otus.ru/lessons/')])/ancestor::div[1]";
+  private final String courseNameLocator = String.format("%s//div//h5", courseTileLocator);
+  private final String courseDateLocator = String.format("(%s//span[contains(text(),'С')])", courseTileLocator)+"[%d]";
 
   public CourseTileComponent(EventFiringWebDriver driver) {
     super(driver);
   }
 
   public List<WebElement> getCourseTiles() {
-    return driver.findElements(By.cssSelector(courseTileSelector));
+    return driver.findElements(By.xpath(courseTileLocator));
   }
 
-  public String getCourseName(WebElement courseTile) {
-    return driver.findElement(By.cssSelector(courseNameSelector)).getText().toString();
+  public String getCourseName() {
+    return driver.findElement(By.xpath(courseNameLocator)).getText();
   }
 
   private String getMonthNumber(String monthName) {
@@ -59,12 +59,13 @@ public class CourseTileComponent extends AbsComponent {
     List<WebElement> courses = getCourseTiles();
 
     WebElement courseTile = courses.stream()
-        .filter(course -> getCourseName(course).equals(courseTitle))
+        .filter(course -> getCourseName().equals(courseTitle))
         .collect(Collectors.toList()).get(0);
 
-    Assertions.assertEquals(getCourseName(courseTile), courseTitle);
+    Assertions.assertEquals(getCourseName(), courseTitle);
 
-    actions.moveToElement(courseTile).click().build().perform();
+    actions.moveToElement(courseTile).build().perform();
+    courseTile.click();
   }
 
   public void getCourseByDate(String choiceCondition) {
@@ -78,13 +79,14 @@ public class CourseTileComponent extends AbsComponent {
       result = coursesWithDates.entrySet().stream()
           .sorted(comparingByValue())
           .findFirst().get().getKey();
-    } else if(choiceCondition.toUpperCase(Locale.ROOT).equals("LATEST")){
+    } else if (choiceCondition.toUpperCase(Locale.ROOT).equals("LATEST")) {
       result = coursesWithDates.entrySet().stream()
           .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
           .findFirst().get().getKey();
     } else {
       throw new SortingParameterException(choiceCondition);
     }
-    actions.moveToElement(result).click().build().perform();
+    actions.moveToElement(result).build().perform();
+    result.click();
   }
 }

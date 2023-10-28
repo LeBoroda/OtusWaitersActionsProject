@@ -4,7 +4,7 @@ public enum CourseTitleData {
   APACHEKAFKA("Apache Kafka"),
   DEVREL("DevRel");
 
-  private String name;
+  private final String name;
 
   CourseTitleData(String name) {
     this.name = name;

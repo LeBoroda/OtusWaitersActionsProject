@@ -11,8 +11,4 @@ public class MouseListener extends AbstractWebDriverEventListener {
     ((JavascriptExecutor) driver).executeScript("arguments[0].style.border='3px solid red'", element);
   }
 
-  @Override
-  public void afterClickOn(WebElement element, WebDriver driver) {
-  //    ((JavascriptExecutor)driver).executeScript("arguments[0].style.border='3px solid red'",element);
-  }
 }
