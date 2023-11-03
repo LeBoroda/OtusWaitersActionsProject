@@ -1,6 +1,7 @@
 package pages.implementation;
 
 import annotations.Path;
+import components.popups.CookiesPopUpComponent;
 import exceptions.PathSupportException;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 
@@ -28,5 +29,10 @@ public class AbsBasePage<T> extends AbsWebPageObject {
   public T open() {
     driver.get(adjustUrl() + getPath());
     return (T) this;
+  }
+
+  protected void closeCookiesPopUpComponent(){
+    CookiesPopUpComponent popUpComponent = new CookiesPopUpComponent(driver);
+    popUpComponent.closeCookiesPopup();
   }
 }

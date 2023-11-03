@@ -26,11 +26,16 @@ public class MainPage_Test {
   }
 
   @Test
-  public void coursesDateSortTest() {
+  public void latestCourseChoiceTest() {
     mainPage
         .open()
-        .choseCourseByDate("latest");
-
+        .getLatestCourse();
   }
 
+  @Test
+  public void earliestCourseChoiceTest() {
+    mainPage
+        .open()
+        .getEarliestCourse();
+  }
 }

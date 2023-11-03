@@ -1,7 +1,5 @@
 package components;
 
-import static java.util.Map.Entry.comparingByValue;
-
 import components.implementation.AbsComponent;
 import data.MonthNameData;
 import exceptions.SortingParameterException;
@@ -16,9 +14,9 @@ import java.util.stream.Stream;
 
 public class CourseTileComponent extends AbsComponent<CourseTileComponent> {
 
-  private final String courseTileLocator = "(//a[contains(@href,'https://otus.ru/lessons/')])/ancestor::div[1]";
+  private final String courseTileLocator = "(//a[contains(@href,'https://otus.ru/lessons/')])/ancestor::div[1]//a[not(contains(@href,'#'))]";
   private final String courseNameLocator = String.format("%s//div//h5", courseTileLocator);
-  private final String courseDateLocator = String.format("(%s//span[contains(text(),'С')])", courseTileLocator)+"[%d]";
+  private final String courseDateLocator = String.format("(%s//span[contains(text(),'С')])", courseTileLocator) + "[%d]";
 
   public CourseTileComponent(EventFiringWebDriver driver) {
     super(driver);
@@ -71,18 +69,25 @@ public class CourseTileComponent extends AbsComponent<CourseTileComponent> {
   public void getCourseByDate(String choiceCondition) {
     List<WebElement> courses = getCourseTiles();
     Map<WebElement, LocalDate> coursesWithDates = new HashMap<>();
+    List<LocalDate> courseDates = new ArrayList<>();
     for (int i = 0; i < courses.size(); i++) {
-      coursesWithDates.put(courses.get(i), getCourseDate(i + 1));
+      LocalDate courseDate = getCourseDate(i + 1);
+      coursesWithDates.put(courses.get(i), courseDate);
+      courseDates.add(courseDate);
     }
+    Collections.sort(courseDates);
+
     WebElement result = null;
     if (choiceCondition.toUpperCase(Locale.ROOT).equals("EARLIEST")) {
-      result = coursesWithDates.entrySet().stream()
-          .sorted(comparingByValue())
-          .findFirst().get().getKey();
+      Map.Entry<WebElement, LocalDate> chosenTileInfo = coursesWithDates.entrySet().stream()
+          .reduce((x, y) -> (x.getValue().isAfter(y.getValue()) ? y : x)).get();
+      Assertions.assertEquals(courseDates.get(0), chosenTileInfo.getValue());
+      result = chosenTileInfo.getKey();
     } else if (choiceCondition.toUpperCase(Locale.ROOT).equals("LATEST")) {
-      result = coursesWithDates.entrySet().stream()
-          .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-          .findFirst().get().getKey();
+      Map.Entry<WebElement, LocalDate> chosenTileInfo = coursesWithDates.entrySet().stream()
+          .reduce((x, y) -> (x.getValue().isAfter(y.getValue()) ? x : y)).get();
+      Assertions.assertEquals(courseDates.get(courseDates.size() - 1), chosenTileInfo.getValue());
+      result = chosenTileInfo.getKey();
     } else {
       throw new SortingParameterException(choiceCondition);
     }

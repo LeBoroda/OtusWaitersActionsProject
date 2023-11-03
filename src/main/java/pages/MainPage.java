@@ -2,7 +2,6 @@ package pages;
 
 import annotations.Path;
 import components.CourseTileComponent;
-import components.popups.CookiesPopUpComponent;
 import data.CourseTitleData;
 import org.openqa.selenium.support.events.EventFiringWebDriver;
 import pages.implementation.AbsBasePage;
@@ -14,17 +13,21 @@ public class MainPage extends AbsBasePage<MainPage> {
   }
 
   public void findCourseByTitle(CourseTitleData courseTitle) {
-    CookiesPopUpComponent popUpComponent = new CookiesPopUpComponent(driver);
-    popUpComponent.closeCookiesPopup();
+    closeCookiesPopUpComponent();
     CourseTileComponent courseTile = new CourseTileComponent(driver);
     courseTile.getCourseByTitle(courseTitle.getName());
   }
 
-  public void choseCourseByDate(String condition) {
-    CookiesPopUpComponent popUpComponent = new CookiesPopUpComponent(driver);
-    popUpComponent.closeCookiesPopup();
+  public void getLatestCourse() {
+    closeCookiesPopUpComponent();
     CourseTileComponent courseTile = new CourseTileComponent(driver);
-    courseTile.getCourseByDate(condition);
+    courseTile.getCourseByDate("LATEST");
+  }
+
+  public void getEarliestCourse() {
+    closeCookiesPopUpComponent();
+    CourseTileComponent courseTile = new CourseTileComponent(driver);
+    courseTile.getCourseByDate("EARLIEST");
   }
 
 }
